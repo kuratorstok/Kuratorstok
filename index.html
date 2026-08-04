@@ -363,9 +363,11 @@ function App(){
         </div>
         <div style={{display:"flex",gap:10}}>
           <button onClick={()=>setShowSettings(true)} style={{display:"flex",alignItems:"center",gap:7,background:"transparent",border:`1px solid ${C.line}`,color:C.paper,borderRadius:7,padding:"10px 14px",fontSize:13}}>{I.gear} API Key</button>
-          <button onClick={()=>fileInput.current?.click()} style={{display:"flex",alignItems:"center",gap:8,background:C.blue,color:C.ink,border:"none",borderRadius:7,padding:"10px 16px",fontWeight:600,fontSize:13.5}}>{I.upload} Tambah foto / video</button>
+          <label style={{display:"flex",alignItems:"center",gap:8,background:C.blue,color:C.ink,border:"none",borderRadius:7,padding:"10px 16px",fontWeight:600,fontSize:13.5,cursor:"pointer"}}>
+            {I.upload} Tambah foto / video
+            <input type="file" accept="image/*,video/*" multiple style={{position:"absolute",width:1,height:1,opacity:0,pointerEvents:"none"}} onChange={(e)=>{ if (e.target.files && e.target.files.length) handleFiles(e.target.files); e.target.value=""; }} />
+          </label>
         </div>
-        <input ref={fileInput} type="file" accept="image/*,video/*" multiple hidden onChange={(e)=>e.target.files && handleFiles(e.target.files)} />
       </header>
 
       {showSettings && (
