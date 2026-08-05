@@ -869,6 +869,11 @@ function App(){
           e("button",{onClick:function(){setZoomScale(1); setZoomOpen(true);}, style:{background:C.panel2,border:"1px solid "+C.line,color:C.paper,borderRadius:7,padding:"7px 14px",fontSize:12.5}}, "🔍 Perbesar"),
           e("button",{onClick:function(){setHealMode(!healMode); setSelectMode(false);}, style:{background: healMode?C.teal:C.panel2,border:"1px solid "+C.line,color: healMode?C.ink:C.paper,borderRadius:7,padding:"7px 14px",fontSize:12.5,fontWeight: healMode?700:400}}, "🩹 Healing"+(healMode?" (aktif)":"")),
           e("button",{onClick:function(){setSelectMode(!selectMode); setHealMode(false); if(selectMode) setSelectedPointIdx(null);}, style:{background: selectMode?C.blue:C.panel2,border:"1px solid "+C.line,color: selectMode?C.ink:C.paper,borderRadius:7,padding:"7px 14px",fontSize:12.5,fontWeight: selectMode?700:400}}, "🎯 Selektif"+(selectMode?" (aktif)":""))
+        ) : null,
+        selected.quality ? e("div",{style:{display:"flex",gap: isNarrow?8:22,justifyContent:"center",flexWrap:"wrap",width:"100%",paddingTop:6,borderTop:"1px solid "+C.line}},
+          e(Meter,{label:"Ketajaman", value:selected.quality.variance, max:250, good:130, warn:60}),
+          e(Meter,{label:"Kecerahan", value:selected.quality.brightnessAvg, max:255, good:60, warn:30}),
+          e(Meter,{label:"Resolusi", value:selected.quality.mp, max:12, good:4, warn:1, unit:"MP"})
         ) : null
       ),
       (selected.kind!=="video" && healMode) ? e("div",{style:{width:"100%",background:C.panel2,border:"1px solid "+C.line,borderRadius:8,padding:12,marginBottom:16}},
@@ -895,12 +900,7 @@ function App(){
         })() : e("div",{style:{fontSize:12,color:C.muted,fontStyle:"italic"}}, "Belum ada titik dipilih — tap di foto untuk mulai.")
       ) : null
       ,
-      selected.quality ? e("div",{style:{display:"flex",gap: isNarrow?10:22,justifyContent:"center",flexWrap:"wrap",background:C.panel,borderRadius:10,padding:"16px 10px",marginBottom:16}},
-        e(Meter,{label:"Ketajaman", value:selected.quality.variance, max:250, good:130, warn:60}),
-        e(Meter,{label:"Kecerahan", value:selected.quality.brightnessAvg, max:255, good:60, warn:30}),
-        e(Meter,{label:"Resolusi", value:selected.quality.mp, max:12, good:4, warn:1, unit:"MP"})
-      ) : null,
-      (selected.quality && selected.quality.warnings.length>0) ? e("div",{style:{marginBottom:16}},
+      (selected.quality && selected.quality.warnings.length>0) ? e("div",{style:{marginBottom:16,marginTop:4}},
         selected.quality.warnings.map(function(w,wi){
           return e("div",{key:wi, style:{display:"flex",gap:8,alignItems:"center",fontSize:12.5,color: selected.quality.status==="reject"?C.clay:C.amber,marginBottom:6}}, I.warn, " ", w);
         })
